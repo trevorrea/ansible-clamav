@@ -61,7 +61,7 @@ clamav_clamd_config:
   OnAccessExcludeUID: 0
 
 # Enabling this is likely to have a significant performance impact to your system
-clamav_onaccess_scanning: true
+clamav_onaccess_scanning: false
 
 # Specify mount paths or file paths you want to include as part of your on-access configuration
 clamav_onaccess_conf:
@@ -72,6 +72,12 @@ clamav_onaccess_conf:
 clamav_daily_cron_enabled: true
 
 clamav_daily_updates_enabled: true
+
+clamav_daily_cron_exclusions:
+  - /dev 
+  - /proc 
+  - /run 
+  - /sys
 
 # Freshclam Database Updates
 clamav_freshclam_config:

@@ -1,0 +1,5 @@
+.cache
+.molecule/roles/*
+.molecule/state.yml
+.vagrant
+tests/test_default.pyc

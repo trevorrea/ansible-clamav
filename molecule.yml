@@ -1,0 +1,38 @@
+---
+ansible:
+  playbook: playbook.yml
+  group_vars:
+    clamav:
+      clamav_selinux_enabled: false
+dependency:
+  name: galaxy
+  requirements_file: requirements.yml
+driver:
+molecule:
+  ignore_paths:
+    - .git
+    - .molecule
+    - .tox
+    - .vagrant
+  test:
+    sequence:
+      - destroy
+      - syntax
+      - create
+      - converge
+#     - idempotence
+      - verify
+docker:
+  containers:
+    - name: clamav
+      image: centos
+      image_version: 7
+      cap_add:
+        - SYS_ADMIN
+      command: '/sbin/init'
+      volume_mounts:
+        - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+      ansible_groups:
+        - clamav
+verifier:
+  name: goss

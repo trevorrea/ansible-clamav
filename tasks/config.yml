@@ -34,6 +34,7 @@
     mode: '0660'
     owner: '{{ clamav_user }}'
     group: '{{ clamav_group }}'
+    setype: "{{'antivirus_log_t' if clamav_selinux_enabled | default(false) else omit}}"
   with_items:
    - '{{ clamav_clamd_config.LogFile }}'
    - '{{ clamav_freshclam_config.UpdateLogFile }}'
@@ -49,7 +50,7 @@
     - { src: 'scan.conf.j2' , dest: '{{ clamav_confd_dir }}/scan.conf'}
     - { src: 'freshclam.conf.j2' , dest: '/etc/freshclam.conf'}
   notify:
-    - 'Clamav | Restart clamd service'
+    - Clamav | Restart clamd service
 
 # List all configuration files
 - name: Clamav | List config files
@@ -86,12 +87,12 @@
 
 - name: Clamav | Schedule daily scan
   cron:
-    name: 'Execute Daily ClamAV Scan'
+    name: Execute Daily ClamAV Scan
     special_time: daily
-    state: 'present'
+    state: present
     user: root
-    job: '/root/clamav_daily_scan.sh'
-    cron_file: 'clamav_daily'
+    job: /root/clamav_daily_scan.sh
+    cron_file: clamav_daily
   when: clamav_daily_cron_enabled
 
 - name: flush handlers to restart clamav immediately

@@ -1,0 +1,4 @@
+clamav ansible_connection=docker
+
+[clamav]
+clamav
